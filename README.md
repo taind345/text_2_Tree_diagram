@@ -60,6 +60,8 @@ If you want to create a standalone executable for Windows:
 
 ## 📝 Input Format
 The tool expects text where hierarchy is defined by indentation (spaces or tabs).
+<img width="2559" height="1528" alt="image" src="https://github.com/user-attachments/assets/1608ca05-1684-43e2-9c3d-2c3bda566f45" />
+
 
 **Example Input:**
 ```text
@@ -89,3 +91,4 @@ Root
 - **GUI**: PyWebView
 - **Packaging**: PyInstaller
 - **Frontend**: HTML5, CSS3 (Glassmorphism), Vanilla JavaScript
+
