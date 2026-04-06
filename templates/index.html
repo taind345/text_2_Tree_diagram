@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-Tree Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #38bdf8;
+            --accent: #818cf8;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --border: rgba(148, 163, 184, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 800px) {
+            .editor-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        textarea, pre {
+            width: 100%;
+            height: 400px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        pre {
+            overflow: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .config {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        input[type="number"] {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            width: 3rem;
+            outline: none;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Text2Tree</h1>
+            <p class="subtitle">Convert indented text into beautiful Unicode diagrams</p>
+        </header>
+
+        <main class="editor-grid">
+            <div class="card">
+                <div class="button-group">
+                    <label>Input (Indented Text)</label>
+                    <div class="config">
+                        Indent: <input type="number" id="indentSize" value="2" min="1" max="8">
+                    </div>
+                </div>
+                <textarea id="inputText" placeholder="A&#10;  B&#10;  C&#10;    D&#10;  E">A
+  B
+  C
+    D
+  E</textarea>
+                <button id="convertBtn">Convert to Tree</button>
+            </div>
+
+            <div class="card">
+                <div class="button-group">
+                    <label>Output</label>
+                    <button class="copy-btn" id="copyBtn">Copy Output</button>
+                </div>
+                <pre id="outputText"></pre>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        const convertBtn = document.getElementById('convertBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const indentSize = document.getElementById('indentSize');
+
+        async function convert() {
+            const text = inputText.value;
+            const spaces = indentSize.value;
+            
+            if (!text.trim()) {
+                outputText.textContent = "";
+                return;
+            }
+
+            try {
+                const response = await fetch('/convert', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text, spaces: parseInt(spaces) })
+                });
+                const data = await response.json();
+                
+                // If the output is identical to input and has no tree characters, 
+                // it might mean no indentation was found.
+                if (data.tree === text.trim() && !data.tree.includes('├──') && !data.tree.includes('└──')) {
+                    outputText.innerHTML = `<span style="color: #fb923c; font-style: italic;">No indentation detected. Use spaces or tabs to create hierarchy.</span>\n\n${data.tree}`;
+                } else {
+                    outputText.textContent = data.tree;
+                }
+            } catch (err) {
+                outputText.textContent = "Error converting text: " + err.message;
+            }
+        }
+
+        // Real-time conversion
+        inputText.addEventListener('input', convert);
+        indentSize.addEventListener('input', convert);
+        convertBtn.addEventListener('click', convert);
+
+        // Handle Tab key for indentation
+        inputText.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = inputText.selectionStart;
+                const end = inputText.selectionEnd;
+                const spaces = " ".repeat(parseInt(indentSize.value) || 2);
+                
+                // Set textarea value to: text before caret + spaces + text after caret
+                inputText.value = inputText.value.substring(0, start) + 
+                                  spaces + 
+                                  inputText.value.substring(end);
+
+                // Put caret at right position again
+                inputText.selectionStart = inputText.selectionEnd = start + spaces.length;
+                
+                // Trigger conversion
+                convert();
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(outputText.textContent);
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = 'Copy Output'; }, 2000);
+        });
+
+        // Initialize with default
+        convert();
+    </script>
+</body>
+</html>
