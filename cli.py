@@ -7,15 +7,9 @@ def main():
     parser.add_argument("-s", "--spaces", type=int, default=2, help="Number of spaces per level (default: 2)")
     args = parser.parse_args()
 
-    # Read all lines from stdin
-    input_text = sys.stdin.read()
-    
-    if not input_text.strip():
-        return
-
-    parsed = parse_indented_text(input_text, spaces_per_level=args.spaces)
-    tree_str = format_tree(parsed)
-    print(tree_str)
+    txt = sys.stdin.read()
+    if txt.strip():
+        print(format_tree(parse_indented_text(txt, args.spaces)))
 
 if __name__ == "__main__":
     main()
