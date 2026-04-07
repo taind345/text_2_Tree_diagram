@@ -15,6 +15,29 @@
             --text-dim: #6b7280;
             --border: #e5e7eb;
             --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --hover-bg: #f9fafb;
+            --toolbar-bg: #fafafa;
+            --input-bg: #ffffff;
+            --pre-bg: #f9fafb;
+            --pre-border: #f1f5f9;
+            --focus-shadow: rgba(26, 26, 26, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #f3f4f6;
+            --accent: #f59e0b;
+            --text-main: #f3f4f6;
+            --text-dim: #9ca3af;
+            --border: #374151;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            --hover-bg: #2d2d2d;
+            --toolbar-bg: #1e1e1e;
+            --input-bg: #121212;
+            --pre-bg: #121212;
+            --pre-border: #374151;
+            --focus-shadow: rgba(243, 244, 246, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,6 +66,43 @@
             text-align: center;
             margin-bottom: 0.5rem;
             position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            background: var(--hover-bg);
+        }
+
+        .theme-icon {
+            width: 20px;
+            height: 20px;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 600px) {
+            .theme-toggle {
+                position: static;
+                margin: 0 auto 1rem auto;
+            }
         }
 
         h1 {
@@ -85,7 +145,7 @@
         }
 
         .toggle-btn:hover {
-            background-color: #f9fafb;
+            background-color: var(--hover-bg);
             color: var(--text-main);
             border-color: var(--text-dim);
         }
@@ -127,7 +187,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #fafafa;
+            background: var(--toolbar-bg);
         }
 
         .zen-body {
@@ -143,11 +203,13 @@
             font-size: 1rem;
             line-height: 1.6;
             padding: 2rem;
+            background: var(--input-bg);
+            color: var(--text-main);
         }
         
         .zen-body textarea:focus { 
             box-shadow: none; 
-            background: #ffffff;
+            background: var(--input-bg);
         }
 
         label {
@@ -161,7 +223,7 @@
         textarea, pre {
             width: 100%;
             height: 450px;
-            background: #fff;
+            background: var(--input-bg);
             border: 1px solid var(--border);
             border-radius: 0.75rem;
             padding: 1.25rem;
@@ -175,15 +237,15 @@
 
         textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.05);
+            box-shadow: 0 0 0 3px var(--focus-shadow);
         }
 
         pre {
             overflow: auto;
             white-space: pre-wrap;
             word-wrap: break-word;
-            background-color: #f9fafb;
-            border-color: #f1f5f9;
+            background-color: var(--pre-bg);
+            border-color: var(--pre-border);
         }
 
         .button-group {
@@ -218,7 +280,7 @@
         }
 
         input[type="number"] {
-            background: #fff;
+            background: var(--input-bg);
             border: 1px solid var(--border);
             color: var(--text-main);
             padding: 0.4rem 0.6rem;
@@ -238,10 +300,11 @@
             font-family: 'Inter', sans-serif;
             font-weight: 500;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .copy-btn:hover {
-            background: #f9fafb;
+            background: var(--hover-bg);
             border-color: var(--text-dim);
             color: var(--text-main);
         }
@@ -260,6 +323,22 @@
 <body>
     <div class="container">
         <header>
+            <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle Dark Mode">
+                <svg id="moonIcon" class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <svg id="sunIcon" class="theme-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
             <h1>Text2Tree</h1>
             <p class="subtitle">Beautiful Unicode diagrams from indented text.</p>
             <div class="toggle-container">
@@ -318,6 +397,37 @@
     </div>
 
     <script>
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const moonIcon = document.getElementById('moonIcon');
+        const sunIcon = document.getElementById('sunIcon');
+
+        // Check for saved user preference, if any, on load of the website
+        const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            if (currentTheme === 'dark') {
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            let switchToTheme = theme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', switchToTheme);
+            localStorage.setItem('theme', switchToTheme);
+            
+            if (switchToTheme === 'dark') {
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        });
+
         // DOM Elements
         const viewToggleBtn = document.getElementById('viewToggleBtn');
         const zenView = document.getElementById('zenView');
