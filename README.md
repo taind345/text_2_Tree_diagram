@@ -41,7 +41,8 @@ python app.py
 ```
 <img width="1296" height="134" alt="image" src="https://github.com/user-attachments/assets/90888175-fe88-463d-9f72-a2cc329ff99a" />
 This will open a native window where you can type or paste your text.
-<img width="2559" height="1516" alt="image" src="https://github.com/user-attachments/assets/cedf47ba-796b-4a5a-8b5b-a047d7bc1f83" />
+<img width="2558" height="1526" alt="image" src="https://github.com/user-attachments/assets/486b489c-2e72-4270-bf59-7d2483041fd8" />
+
 
 ### 2. Run in CLI (Command Line)
 You can pipe text into the CLI tool:
@@ -70,8 +71,8 @@ If you want to create a standalone executable for Windows:
 2. Wait for the process to finish.
 3. Your application will be in the **`dist`** folder as **`Text2Tree.exe`**.
    <img width="1413" height="568" alt="image" src="https://github.com/user-attachments/assets/31216761-b8ec-4917-b6c1-0526bdb685ac" />
-<img width="2558" height="1526" alt="image" src="https://github.com/user-attachments/assets/40f71ecb-5d3e-40cf-af4b-b5f7726dc734" />
 
+<img width="1170" height="129" alt="image" src="https://github.com/user-attachments/assets/7960c685-4d41-48f8-bc5f-c225fe649024" />
 
 ==> now you can run this app by this .exe file without many complex bash scripting.Just click on Text2Tree.exe and enjoy
 <img width="1399" height="515" alt="image" src="https://github.com/user-attachments/assets/5eb75c27-50bd-46f4-a421-21103f08b9fc" />
