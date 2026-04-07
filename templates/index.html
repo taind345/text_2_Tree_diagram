@@ -10,18 +10,14 @@
             --bg-color: #fafaF8;
             --card-bg: #ffffff;
             --primary: #1a1a1a;
-            --accent: #d97706; /* Subtle brown/tan accent */
+            --accent: #d97706;
             --text-main: #1a1a1a;
             --text-dim: #6b7280;
             --border: #e5e7eb;
             --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, system-ui, sans-serif;
@@ -40,12 +36,13 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 3rem;
+            gap: 2rem;
         }
 
         header {
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            position: relative;
         }
 
         h1 {
@@ -66,17 +63,42 @@
             margin: 0 auto;
         }
 
+        .toggle-container {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .toggle-btn {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 0.6rem 1.25rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-btn:hover {
+            background-color: #f9fafb;
+            color: var(--text-main);
+            border-color: var(--text-dim);
+        }
+
+        .hidden { display: none !important; }
+
         .editor-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
         }
 
-        @media (max-width: 900px) {
-            .editor-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        @media (max-width: 900px) { .editor-grid { grid-template-columns: 1fr; } }
 
         .card {
             background: var(--card-bg);
@@ -90,8 +112,42 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .card:hover {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        .card:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+
+        .zen-card {
+            padding: 0;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .zen-toolbar {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+        }
+
+        .zen-body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .zen-body textarea {
+            border: none;
+            border-radius: 0;
+            height: 600px;
+            box-shadow: none;
+            font-size: 1rem;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        
+        .zen-body textarea:focus { 
+            box-shadow: none; 
+            background: #ffffff;
         }
 
         label {
@@ -136,7 +192,7 @@
             align-items: center;
         }
 
-        button {
+        button.primary-btn {
             background: var(--primary);
             color: white;
             border: none;
@@ -149,14 +205,8 @@
             font-family: 'Source Serif 4', serif;
         }
 
-        button:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
+        button.primary-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        button.primary-btn:active { transform: translateY(0); }
 
         .config {
             display: flex;
@@ -183,9 +233,11 @@
             border: 1px solid var(--border);
             padding: 0.5rem 1rem;
             font-size: 0.85rem;
+            border-radius: 0.5rem;
             color: var(--text-dim);
             font-family: 'Inter', sans-serif;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .copy-btn:hover {
@@ -195,7 +247,8 @@
         }
 
         .footer {
-            margin-top: 4rem;
+            margin-top: auto;
+            padding-top: 4rem;
             text-align: center;
             color: var(--text-dim);
             font-size: 0.875rem;
@@ -209,30 +262,53 @@
         <header>
             <h1>Text2Tree</h1>
             <p class="subtitle">Beautiful Unicode diagrams from indented text.</p>
+            <div class="toggle-container">
+                <button id="viewToggleBtn" class="toggle-btn">
+                    Switch to Classic View
+                </button>
+            </div>
         </header>
 
-        <main class="editor-grid">
+        <!-- ZEN VIEW (Default) - True WYSIWYG -->
+        <main id="zenView" class="card zen-card">
+            <div class="zen-toolbar">
+                <div class="config">
+                    <label>WYSIWYG Tree Editor</label>
+                </div>
+                <button class="copy-btn" id="zenCopyBtn">Copy Tree</button>
+            </div>
+            <div class="zen-body">
+                <textarea id="zenInputText" spellcheck="false" placeholder="Type here...&#10;Press Enter to add nodes.&#10;Press Tab/Shift+Tab to indent.">Root
+├── App
+└── Features
+    ├── Zen Mode
+    └── Smart Indent</textarea>
+            </div>
+        </main>
+
+        <!-- CLASSIC VIEW -->
+        <main id="classicView" class="editor-grid hidden">
             <div class="card">
                 <div class="button-group">
                     <label>Input</label>
                     <div class="config">
-                        Indent: <input type="number" id="indentSize" value="2" min="1" max="8">
+                        Indent: <input type="number" id="classicIndentSize" value="2" min="1" max="8">
                     </div>
                 </div>
-                <textarea id="inputText" spellcheck="false" placeholder="A&#10;  B&#10;  C&#10;    D&#10;  E">A
+                <textarea id="classicInputText" spellcheck="false" placeholder="A&#10;  B&#10;  C&#10;    D&#10;  E">A
   B
   C
     D
   E</textarea>
-                <button id="convertBtn">Convert to Tree</button>
+                <button id="convertBtn" class="primary-btn">Convert to Tree</button>
             </div>
 
             <div class="card">
                 <div class="button-group">
                     <label>Output</label>
-                    <button class="copy-btn" id="copyBtn">Copy Tree</button>
+                    <button class="copy-btn" id="classicCopyBtn">Copy Tree</button>
                 </div>
-                <pre id="outputText"></pre>
+                <pre id="classicOutputText"></pre>
             </div>
         </main>
         
@@ -242,21 +318,47 @@
     </div>
 
     <script>
-        const inputText = document.getElementById('inputText');
-        const outputText = document.getElementById('outputText');
-        const convertBtn = document.getElementById('convertBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const indentSize = document.getElementById('indentSize');
+        // DOM Elements
+        const viewToggleBtn = document.getElementById('viewToggleBtn');
+        const zenView = document.getElementById('zenView');
+        const classicView = document.getElementById('classicView');
 
-        async function convert() {
-            const text = inputText.value;
-            const spaces = indentSize.value;
-            
+        // Zen Elements
+        const zenInputText = document.getElementById('zenInputText');
+        const zenCopyBtn = document.getElementById('zenCopyBtn');
+
+        // Classic Elements
+        const classicInputText = document.getElementById('classicInputText');
+        const classicOutputText = document.getElementById('classicOutputText');
+        const classicIndentSize = document.getElementById('classicIndentSize');
+        const convertBtn = document.getElementById('convertBtn');
+        const classicCopyBtn = document.getElementById('classicCopyBtn');
+
+        let isZenMode = true;
+
+        // View Toggle Logic
+        viewToggleBtn.addEventListener('click', () => {
+            isZenMode = !isZenMode;
+            if (isZenMode) {
+                zenView.classList.remove('hidden');
+                classicView.classList.add('hidden');
+                viewToggleBtn.textContent = 'Switch to Classic Mode';
+            } else {
+                zenView.classList.add('hidden');
+                classicView.classList.remove('hidden');
+                viewToggleBtn.textContent = 'Switch to Zen Mode';
+                convertClassic();
+            }
+        });
+
+        // ============================================
+        // CLASSIC MODE LOGIC
+        // ============================================
+        async function fetchTree(text, spaces, outputElem) {
             if (!text.trim()) {
-                outputText.textContent = "";
+                outputElem.textContent = "";
                 return;
             }
-
             try {
                 const response = await fetch('/convert', {
                     method: 'POST',
@@ -265,52 +367,265 @@
                 });
                 const data = await response.json();
                 
-                // If the output is identical to input and has no tree characters, 
-                // it might mean no indentation was found.
                 if (data.tree === text.trim() && !data.tree.includes('├──') && !data.tree.includes('└──')) {
-                    outputText.innerHTML = `<span style="color: #fb923c; font-style: italic;">No indentation detected. Use spaces or tabs to create hierarchy.</span>\n\n${data.tree}`;
+                    outputElem.innerHTML = `<span style="color: #fb923c; font-style: italic;">No indentation detected. Use spaces or tabs to create hierarchy.</span>\n\n${data.tree}`;
                 } else {
-                    outputText.textContent = data.tree;
+                    outputElem.textContent = data.tree;
                 }
             } catch (err) {
-                outputText.textContent = "Error converting text: " + err.message;
+                outputElem.textContent = "Error converting text: " + err.message;
             }
         }
 
-        // Real-time conversion
-        inputText.addEventListener('input', convert);
-        indentSize.addEventListener('input', convert);
-        convertBtn.addEventListener('click', convert);
+        function convertClassic() { fetchTree(classicInputText.value, classicIndentSize.value, classicOutputText); }
+        classicInputText.addEventListener('input', convertClassic);
+        classicIndentSize.addEventListener('input', classicInputText.value.length ? convertClassic : null);
+        convertBtn.addEventListener('click', convertClassic);
 
-        // Handle Tab key for indentation
-        inputText.addEventListener('keydown', (e) => {
+        classicInputText.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
                 e.preventDefault();
-                const start = inputText.selectionStart;
-                const end = inputText.selectionEnd;
-                const spaces = " ".repeat(parseInt(indentSize.value) || 2);
+                const start = classicInputText.selectionStart;
+                const end = classicInputText.selectionEnd;
+                const spaces = " ".repeat(parseInt(classicIndentSize.value) || 2);
                 
-                // Set textarea value to: text before caret + spaces + text after caret
-                inputText.value = inputText.value.substring(0, start) + 
-                                  spaces + 
-                                  inputText.value.substring(end);
+                classicInputText.value = classicInputText.value.substring(0, start) + spaces + classicInputText.value.substring(end);
+                classicInputText.selectionStart = classicInputText.selectionEnd = start + spaces.length;
+                convertClassic();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                const start = classicInputText.selectionStart;
+                const end = classicInputText.selectionEnd;
+                
+                const textBeforeCaret = classicInputText.value.substring(0, start);
+                const lines = textBeforeCaret.split('\n');
+                const lastLine = lines[lines.length - 1];
+                const match = lastLine.match(/^(\s*)/);
+                const leadingSpaces = match ? match[1] : '';
 
-                // Put caret at right position again
-                inputText.selectionStart = inputText.selectionEnd = start + spaces.length;
+                const insertText = '\n' + leadingSpaces;
                 
-                // Trigger conversion
-                convert();
+                classicInputText.value = classicInputText.value.substring(0, start) + insertText + classicInputText.value.substring(end);
+                classicInputText.selectionStart = classicInputText.selectionEnd = start + insertText.length;
+                convertClassic();
             }
         });
 
-        copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(outputText.textContent);
-            copyBtn.textContent = 'Copied!';
-            setTimeout(() => { copyBtn.textContent = 'Copy Output'; }, 2000);
+
+        // ============================================
+        // ZEN WYSIWYG EDITOR LOGIC
+        // ============================================
+        function parseDepth(line) {
+            let depth = 0;
+            let i = 0;
+            while (i < line.length) {
+                if (line.startsWith("├── ", i) || line.startsWith("└── ", i) || line.startsWith("│   ", i) || line.startsWith("    ", i)) {
+                    depth++;
+                    i += 4;
+                } else if (line.startsWith("\t", i)) {
+                    depth++;
+                    i += 1;
+                } else {
+                    let remainder = line.substring(i);
+                    const corruptedMatch = remainder.match(/^([├─└│ ]*[├─└│][├─└│ ]*)/);
+                    if (corruptedMatch) {
+                        i += corruptedMatch[1].length;
+                    }
+                    break;
+                }
+            }
+            return { depth: Math.max(0, parseInt(depth)), text: line.substring(i) };
+        }
+
+        function formatTreeJS(parsedLines) {
+            let result = [];
+            for (let i = 0; i < parsedLines.length; i++) {
+                let line = parsedLines[i];
+                if (line.text.trim() === '' && line.depth === 0) {
+                    result.push({ text: '', prefix: '' });
+                    continue;
+                }
+                
+                let isLast = true;
+                for (let j = i + 1; j < parsedLines.length; j++) {
+                    if (parsedLines[j].text.trim() === '' && parsedLines[j].depth === 0) continue;
+                    if (parsedLines[j].depth < line.depth) break; 
+                    if (parsedLines[j].depth === line.depth) {
+                        isLast = false;
+                        break;
+                    }
+                }
+                
+                let prefix = "";
+                if (line.depth > 0) {
+                    for (let d = 0; d < line.depth - 1; d++) {
+                        let isAncestorLast = true;
+                        for (let j = i + 1; j < parsedLines.length; j++) {
+                            if (parsedLines[j].text.trim() === '' && parsedLines[j].depth === 0) continue;
+                            if (parsedLines[j].depth < d + 1) break; 
+                            if (parsedLines[j].depth === d + 1) {
+                                isAncestorLast = false;
+                                break;
+                            }
+                        }
+                        
+                        if (isAncestorLast) {
+                            prefix += "    ";
+                        } else {
+                            prefix += "│   ";
+                        }
+                    }
+                    if (isLast) {
+                        prefix += "└── ";
+                    } else {
+                        prefix += "├── ";
+                    }
+                }
+                result.push({ text: line.text, prefix: prefix });
+            }
+            return result;
+        }
+
+        function applyTreeFormat(textarea) {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const oldText = textarea.value;
+            
+            if (!oldText) return;
+
+            const oldLines = oldText.split('\n');
+            
+            let startLineIndex = -1, endLineIndex = -1;
+            let startOldLineOffset = 0, endOldLineOffset = 0;
+            
+            let charCount = 0;
+            for (let i = 0; i < oldLines.length; i++) {
+                const lineLen = oldLines[i].length;
+                if (startLineIndex === -1 && start <= charCount + lineLen) {
+                    startLineIndex = i;
+                    startOldLineOffset = start - charCount;
+                }
+                if (endLineIndex === -1 && end <= charCount + lineLen) {
+                    endLineIndex = i;
+                    endOldLineOffset = end - charCount;
+                }
+                charCount += lineLen + 1; // +1 for newline
+            }
+            
+            if (startLineIndex === -1) { startLineIndex = oldLines.length - 1; startOldLineOffset = oldLines[startLineIndex].length; }
+            if (endLineIndex === -1) { endLineIndex = oldLines.length - 1; endOldLineOffset = oldLines[endLineIndex].length; }
+
+            const parsedLines = oldLines.map(parseDepth);
+            const newFormatted = formatTreeJS(parsedLines);
+            const newText = newFormatted.map(f => f.prefix + f.text).join('\n');
+            
+            if (newText !== oldText) {
+                textarea.value = newText;
+                
+                function getOldPrefixLength(oldLine, pLine) {
+                    return oldLine.length - pLine.text.length;
+                }
+                
+                function calculateNewCursor(lineIndex, oldLineOffset) {
+                    let cursor = 0;
+                    for (let i = 0; i < lineIndex; i++) {
+                        cursor += newFormatted[i].prefix.length + newFormatted[i].text.length + 1;
+                    }
+                    const oldPrefixLen = getOldPrefixLength(oldLines[lineIndex], parsedLines[lineIndex]);
+                    const newPrefixLen = newFormatted[lineIndex].prefix.length;
+                    const textOffset = Math.max(0, oldLineOffset - oldPrefixLen);
+                    
+                    if (oldLineOffset <= oldPrefixLen && textOffset === 0) {
+                       return cursor + newPrefixLen;
+                    }
+                    return cursor + newPrefixLen + textOffset;
+                }
+                
+                textarea.selectionStart = calculateNewCursor(startLineIndex, startOldLineOffset);
+                textarea.selectionEnd = calculateNewCursor(endLineIndex, endOldLineOffset);
+            }
+        }
+
+        zenInputText.addEventListener('input', () => applyTreeFormat(zenInputText));
+
+        zenInputText.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = zenInputText.selectionStart;
+                const end = zenInputText.selectionEnd;
+                const oldText = zenInputText.value;
+                
+                const linesBeforeStart = oldText.substring(0, start).split('\n');
+                const startLineIndex = linesBeforeStart.length - 1;
+                
+                const linesBeforeEnd = oldText.substring(0, end).split('\n');
+                const endLineIndex = linesBeforeEnd.length - 1;
+
+                if (!e.shiftKey) {
+                    let lines = oldText.split('\n');
+                    for(let i=0; i<lines.length; i++) {
+                        if (i >= startLineIndex && i <= endLineIndex) {
+                            lines[i] = "    " + lines[i];
+                        }
+                    }
+                    zenInputText.value = lines.join('\n');
+                    zenInputText.selectionStart = start + 4;
+                    zenInputText.selectionEnd = end + (endLineIndex - startLineIndex + 1) * 4;
+                } else {
+                    let lines = oldText.split('\n');
+                    let removedStart = 0;
+                    let removedEnd = 0;
+                    for(let i=0; i<lines.length; i++) {
+                        if (i >= startLineIndex && i <= endLineIndex) {
+                            const match = lines[i].match(/^([ \t├─└│]{1,4})/);
+                            if (match) {
+                                const rLen = match[1].length;
+                                lines[i] = lines[i].substring(rLen);
+                                if (i === startLineIndex) removedStart = rLen;
+                                removedEnd += rLen;
+                            }
+                        }
+                    }
+                    zenInputText.value = lines.join('\n');
+                    zenInputText.selectionStart = Math.max(0, start - removedStart);
+                    zenInputText.selectionEnd = Math.max(0, end - removedEnd);
+                }
+                applyTreeFormat(zenInputText);
+            } 
+            else if (e.key === 'Enter') {
+                e.preventDefault();
+                const start = zenInputText.selectionStart;
+                const end = zenInputText.selectionEnd;
+                const oldText = zenInputText.value;
+                
+                const linesBeforeStart = oldText.substring(0, start).split('\n');
+                const currentLine = linesBeforeStart[linesBeforeStart.length - 1];
+                const { depth } = parseDepth(currentLine);
+                
+                const spaces = "    ".repeat(depth);
+                const insertText = '\n' + spaces;
+                
+                zenInputText.value = oldText.substring(0, start) + insertText + oldText.substring(end);
+                zenInputText.selectionStart = zenInputText.selectionEnd = start + insertText.length;
+                
+                applyTreeFormat(zenInputText);
+            }
         });
 
-        // Initialize with default
-        convert();
+
+        // Utilities
+        function setupCopyBtn(btn, outputElem, isInput = false) {
+            btn.addEventListener('click', () => {
+                navigator.clipboard.writeText(isInput ? outputElem.value : outputElem.textContent);
+                btn.textContent = 'Copied!';
+                setTimeout(() => { btn.textContent = 'Copy Tree'; }, 2000);
+            });
+        }
+        setupCopyBtn(zenCopyBtn, zenInputText, true);
+        setupCopyBtn(classicCopyBtn, classicOutputText, false);
+
+        // Initialize Call
+        applyTreeFormat(zenInputText);
     </script>
 </body>
 </html>

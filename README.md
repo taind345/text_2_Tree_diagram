@@ -3,7 +3,9 @@
 A beautiful and efficient tool to convert indented plain text into visual Unicode tree diagrams.
 
 ## ✨ Features
+- **True WYSIWYG Zen Editor**: A revolutionary single-editor mode where typing directly auto-formats into tree branches (`├──`, `└──`) effortlessly, much like bullet points in a word processor.
 - **Interactive Desktop App**: Modern UI with real-time conversion and dark mode.
+- **Classic Split View**: Easily toggle back to the classic dual-pane Input/Output view.
 - **CLI Interface**: Perfect for piping input from other tools.
 - **Standalone Executable**: Easy to package and share without requiring Python.
 - **Micro-animations**: Smooth, responsive design.
