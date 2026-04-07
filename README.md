@@ -11,6 +11,8 @@ A beautiful and efficient tool to convert indented plain text into visual Unicod
 - **Micro-animations**: Smooth, responsive design.
 
 ---
+![Recording 2026-04-07 211539](https://github.com/user-attachments/assets/4c367369-aba4-4906-bada-e7377ba58276)
+
 
 ## 🚀 Installation
 
