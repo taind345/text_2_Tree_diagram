@@ -70,7 +70,8 @@ If you want to create a standalone executable for Windows:
 2. Wait for the process to finish.
 3. Your application will be in the **`dist`** folder as **`Text2Tree.exe`**.
    <img width="1413" height="568" alt="image" src="https://github.com/user-attachments/assets/31216761-b8ec-4917-b6c1-0526bdb685ac" />
-<img width="1094" height="133" alt="image" src="https://github.com/user-attachments/assets/c2f6b761-3635-405b-af6c-5ac9540e6755" />
+<img width="2558" height="1526" alt="image" src="https://github.com/user-attachments/assets/40f71ecb-5d3e-40cf-af4b-b5f7726dc734" />
+
 
 ==> now you can run this app by this .exe file without many complex bash scripting.Just click on Text2Tree.exe and enjoy
 <img width="1399" height="515" alt="image" src="https://github.com/user-attachments/assets/5eb75c27-50bd-46f4-a421-21103f08b9fc" />
