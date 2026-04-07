@@ -9,9 +9,11 @@ A beautiful and efficient tool to convert indented plain text into visual Unicod
 - **CLI Interface**: Perfect for piping input from other tools.
 - **Standalone Executable**: Easy to package and share without requiring Python.
 - **Micro-animations**: Smooth, responsive design.
+- **Dark mode 
 
 ---
 ![Recording 2026-04-07 211539](https://github.com/user-attachments/assets/4c367369-aba4-4906-bada-e7377ba58276)
+<img width="2559" height="1527" alt="image" src="https://github.com/user-attachments/assets/ab4e8453-3698-4cc3-a545-c648b9ee3f33" />
 
 
 ## 🚀 Installation
@@ -73,34 +75,6 @@ If you want to create a standalone executable for Windows:
 ==> now you can run this app by this .exe file without many complex bash scripting.Just click on Text2Tree.exe and enjoy
 <img width="1399" height="515" alt="image" src="https://github.com/user-attachments/assets/5eb75c27-50bd-46f4-a421-21103f08b9fc" />
 ==> you can move the .exe file to your Desktop for convinient access
----
-
-## 📝 Input Format
-The tool expects text where hierarchy is defined by indentation (spaces or tabs).
-<img width="2559" height="1364" alt="image" src="https://github.com/user-attachments/assets/9b5b8596-c5b2-4d4e-86bf-c01104497bc3" />
-
-
-
-**Example Input:**
-```text
-Root
-  Category A
-    Item 1
-    Item 2
-  Category B
-    Subitem
-```
-
-**Output Example:**
-```text
-Root
-├── Category A
-│   ├── Item 1
-│   └── Item 2
-└── Category B
-    └── Subitem
-```
-
 ---
 
 ## 🛠️ Tech Stack
